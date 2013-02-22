@@ -1,0 +1,8 @@
+* remove placereddit.db from git (oops)
+* /r/<reddit>/
+** should be a static page using relative images
+** /r/monkeyturdisnotasubreddit/ should show reddit's 404 images
+* /r/featured/ and /r/random/ should give redirects to a featured subreddit and a random subreddit
+* need to clean out images directory once in a while
+* may need to spider reddit.com to avoid nsfw images in sfw reddits!
+* check to make sure file system cache is clearing out (maybe delete along with other deletion script?)

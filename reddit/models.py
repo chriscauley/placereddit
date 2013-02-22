@@ -26,6 +26,7 @@ class Image(models.Model):
   url = models.URLField(verify_exists=False)
   width = models.IntegerField(default=0)
   height = models.IntegerField(default=0)
+  date_added = models.DateTimeField(auto_now_add=True)
   fname = property(lambda self: self.url.split('/')[-1])
   fpath = property(lambda self: os.path.join(settings.PPATH,'tmp',self.fname))
   def save(self,*args,**kwargs):

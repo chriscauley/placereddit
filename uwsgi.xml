@@ -1,0 +1,5 @@
+<uwsgi>
+  <chdir>/home/chriscauley/placereddit/</chdir>
+  <pythonpath>..</pythonpath>
+  <module>django_uwsgi</module>
+</uwsgi>

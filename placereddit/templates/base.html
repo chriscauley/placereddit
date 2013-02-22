@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}less/global.less" />
+    {% block extraless %}{% if extraless %}
+    <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}{{ extraless }}" />
+    {% endif %}{% endblock %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/less.js"></script> 
+    <!--[if IE 7]>
+      <link rel="stylesheet" type="text/css" href="/static/design/ie7.css"/>
+    <![endif]-->
+    <!--[if IE 8]>
+      <link rel="stylesheet" type="text/css" href="/static/design/ie8.css"/>
+    <![endif]-->
+
+    {% block extrahead %}{% endblock %}
+    {% block extra-head %}{# compromise =D #}{% endblock %}
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <div id="header">
+	{% block header %}{% include "header.html" %}{% endblock %}
+      </div>
+      <div id="content">
+	{% block content %}
+	<div id="main">{% block main %}{% endblock %}</div>
+	<div id="side">{% block side %}{% endblock %}</div>
+	{% endblock %}
+      <div id="footer">{% include "footer.html" %}</div>
+    </div>
+  </body>
+</html>

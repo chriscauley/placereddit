@@ -1,0 +1,6 @@
+*.pyc
+*~
+\#*
+.environ/*
+tmp/*
+src/*

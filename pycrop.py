@@ -31,11 +31,19 @@ def image_entropy(img):
   hist = [float(h) / hist_size for h in hist]
   return -sum([p * math.log(p, 2) for p in hist if p != 0])
 
+slice_size = 50
+fast = False
+
 def crop_wide_image(img,ratio):
   x,y = img.size
+  max_slice = max(int(x-y*ratio)/4,20)
+  if fast:
+    return img.crop((0,0,x,y))
   while ratio < float(x) / y:
     #slice 10px at a time until crop
-    slice_width = min(int(x-y*ratio), 10)
+    slice_width = min(int(x-y*ratio), max_slice)
+    if slice_width == 0:
+      break
     right = img.crop((x-slice_width, 0, x, y))
     left = img.crop((0, 0, slice_width, y))
 
@@ -53,10 +61,14 @@ def crop_tall_image(img,ratio):
   """if the image is taller than it is wide, crop it off. determine
   which pieces to cut off based on the entropy pieces."""
   x,y = img.size
+  max_slice = max(int(y-x/ratio)/4,20)
+  if fast:
+    return img.crop((0,0,x,y))
   while ratio > float(x) / y:
     #slice 10px at a time until crop
-    slice_height = min(int(y*ratio-x), 10)
-
+    slice_height = min(int(y*ratio-x), max_slice)
+    if slice_height == 0:
+      break
     bottom = img.crop((0, y - slice_height, x, y))
     top = img.crop((0, 0, x, slice_height))
 

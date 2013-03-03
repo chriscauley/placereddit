@@ -9,5 +9,5 @@ urlpatterns = patterns(
   url(r'^$','index',name='index'),
   url(r'^%s/$'%s,'index',name='index'),
   url(r'^%s/%s%s$'%(s,wxh,ex),'image',name='image'),
-  url(r'^%s/%s_\d%s$'%(s,wxh,ex),'image',name='image'),
+  url(r'^%s/%s_\d\d?%s$'%(s,wxh,ex),'image',name='image'),
 )

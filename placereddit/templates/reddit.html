@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Place Reddit - Infinite Placeholder Images</h1>
+<p class="lead">
+Place Reddit is an easy and exciting way to get varied pictures for your development servers
+</p>
+<blockquote>
+  {{ url }}300x200_0
+  <img src="{{ url }}300x200_0" width="300" height="200" />
+</blockquote>
+{% for w,h in sizes %}
+{% with randint as r %}
+<img src="{{ url }}{{ w }}x{{ h }}_{{ r }}" width="{{ w }}" height="{{ h }}"
+     alt="{{ url }}{{ w }}x{{ h }}_{{ r }}" title="{{ url }}{{ w }}x{{ h }}_{{ r }}" />
+{% endwith %}
+{% endfor %}
+{% endblock %}

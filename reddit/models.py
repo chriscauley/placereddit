@@ -8,9 +8,10 @@ from PIL import Image as _Image
 import requests, re, os, StringIO, pycrop
 
 class SubReddit(models.Model):
-  name = models.CharField(max_length=255)
-  slug = models.CharField(max_length=255)
+  name = models.CharField(max_length=255,unique=True)
+  slug = models.CharField(max_length=255,unique=True)
   nsfw = models.BooleanField(default=False)
+  get_absolute_url = lambda self: "/r/%s%s/"%(self.slug,"/nsfw" if self.nsfw else "")
   def pull_from_imgur(self):
     url = "http://imgur.com/r/%s/rss"%self.slug
     html = requests.get(url).text

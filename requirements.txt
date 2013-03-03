@@ -3,7 +3,7 @@ south==0.7.6
 PIL==1.1.7 #install me with apt-get!
 -e git+https://github.com/sehmaschine/django-grappelli.git@grappelli_2_4#egg=django-grappelli
 simplejson==2.1.2
-sorl-thumbnail==11.12
+-e git+https://github.com/chriscauley/sorl-thumbnail.git#egg=sorl-thumbnail
 django-devserver==0.4
 #we need this but there's a problem with the pip version, mx.DateTime problem
 psycopg2==2.4.5

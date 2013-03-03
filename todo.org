@@ -6,3 +6,8 @@
 * need to clean out images directory once in a while
 * may need to spider reddit.com to avoid nsfw images in sfw reddits!
 * check to make sure file system cache is clearing out (maybe delete along with other deletion script?)
+* if a reddit is nsfw, but no nsfw tag is given, serve the over18 graphic!
+* crop optimization
+** cache entropic edges to save time (maybe?)
+** max 1000 vs max 200  is 18 vs 15 seconds (100 samples, 100 px crop)
+** similar gains with no hist check (single crop)

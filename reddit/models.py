@@ -12,10 +12,14 @@ class SubReddit(models.Model):
   slug = models.CharField(max_length=255,unique=True)
   nsfw = models.BooleanField(default=False)
   get_absolute_url = lambda self: "/r/%s%s/"%(self.slug,"/nsfw" if self.nsfw else "")
+  featured = models.BooleanField(default=False)
   def pull_from_imgur(self):
     url = "http://imgur.com/r/%s/rss"%self.slug
     html = requests.get(url).text
     imgs = re.findall(r'img src=&quot;(http://i.imgur.com/[\w\d]+\.jpg)&quot;',html)
+    if self.image_set.count() > 60:
+      for i in self.image_set.all()[60:]:
+        i.delete()
     for i,url in enumerate(imgs):
       o,new = Image.objects.get_or_create(url=url,subreddit=self)
       if new:
@@ -30,6 +34,12 @@ class Image(models.Model):
   date_added = models.DateTimeField(auto_now_add=True)
   fname = property(lambda self: self.url.split('/')[-1])
   fpath = property(lambda self: os.path.join(settings.PPATH,'tmp',self.fname))
+  def delete(self,*args,**kwargs):
+    try:
+      os.remove(self.fpath)
+    except OSError:
+      pass
+    return super(Image,self).delete(*args,**kwargs)
   def save(self,*args,**kwargs):
     if not self.width or not self.height:
       self.width, self.height = self.get_PIL_object().size
@@ -52,7 +62,7 @@ class Image(models.Model):
     return response
     
   class Meta:
-    ordering = ("-id",)
+    ordering = ("-date_added",)
   __unicode__ = lambda self: "%s (%s)"%(self.url,self.subreddit)
 
 def test():

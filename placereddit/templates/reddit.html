@@ -6,13 +6,12 @@
 Place Reddit is an easy and exciting way to get varied pictures for your development servers
 </p>
 <blockquote>
-  {{ url }}300x200_0
-  <img src="{{ url }}300x200_0" width="300" height="200" />
+  <img src="300x200_0" width="300" height="200" />
 </blockquote>
 {% for w,h in sizes %}
 {% with randint as r %}
-<img src="{{ url }}{{ w }}x{{ h }}_{{ r }}" width="{{ w }}" height="{{ h }}"
-     alt="{{ url }}{{ w }}x{{ h }}_{{ r }}" title="{{ url }}{{ w }}x{{ h }}_{{ r }}" />
+<img src="{{ w }}x{{ h }}_{{ r }}" width="{{ w }}" height="{{ h }}"
+     alt="{{ w }}x{{ h }}_{{ r }}" title="{{ w }}x{{ h }}_{{ r }}" />
 {% endwith %}
 {% endfor %}
 {% endblock %}

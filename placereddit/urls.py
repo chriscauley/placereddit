@@ -8,6 +8,7 @@ urlpatterns = patterns(
   (r'^grappelli/', include('grappelli.urls')),
   url(r'^admin/', include(admin.site.urls)),
   url(r'^r/', include('reddit.urls')),
+  url(r'^$',redirect_to, {'url': '/r/featured/'}),
 )
 
 if settings.DEBUG:

@@ -7,7 +7,7 @@ ex = "(?P<extension>\.\w+)?"
 
 urlpatterns = patterns(
   'reddit.views',
-  url(r'^$',redirect_to, {'url': '/r/random/'}),
+  url(r'^$',redirect_to, {'url': '/r/featured/'}),
   url(r'^%s/$'%s,'index',name='index'),
   url(r'^%s/%s%s$'%(s,wxh,ex),'image',name='image'),
   url(r'^%s/%s_[1,2,3]?\d%s$'%(s,wxh,ex),'image',name='image'),

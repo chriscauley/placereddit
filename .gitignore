@@ -4,3 +4,4 @@
 .environ/*
 tmp/*
 src/*
+static/*

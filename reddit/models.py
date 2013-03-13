@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from sorl.thumbnail import ImageField
 from PIL import Image as _Image
 
-import requests, re, os, StringIO, pycrop
+from smartcrop import cache_entropies, prepare_image
+import requests, re, os, StringIO
 
 class SubReddit(models.Model):
   name = models.CharField(max_length=255,unique=True)
@@ -31,6 +32,8 @@ class Image(models.Model):
   url = models.URLField(verify_exists=False)
   width = models.IntegerField(default=0)
   height = models.IntegerField(default=0)
+  y_crop_order = models.CharField(max_length=256,null=True,blank=True)
+  x_crop_order = models.CharField(max_length=256,null=True,blank=True)
   date_added = models.DateTimeField(auto_now_add=True)
   fname = property(lambda self: self.url.split('/')[-1])
   fpath = property(lambda self: os.path.join(settings.PPATH,'tmp',self.fname))
@@ -41,8 +44,10 @@ class Image(models.Model):
       pass
     return super(Image,self).delete(*args,**kwargs)
   def save(self,*args,**kwargs):
-    if not self.width or not self.height:
-      self.width, self.height = self.get_PIL_object().size
+    if not self.width or not self.x_crop_order:
+      I = self.get_PIL_object()
+      self.width, self.height = I.size
+      self.x_crop_order,self.y_crop_order = cache_entropies(I)
     super(Image,self).save(*args,**kwargs)
   def get_PIL_object(self):
     try:
@@ -56,7 +61,7 @@ class Image(models.Model):
     return _Image.open(f)
   def crop_response(self,width,height):
     i = self.get_PIL_object()
-    area = pycrop.prepare_image(i,(width,height))
+    area = prepare_image(i,(width,height),self.x_crop_order,self.y_crop_order)
     response = HttpResponse(mimetype="image/jpeg")
     area.save(response, format='jpeg')
     return response

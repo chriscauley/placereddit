@@ -13,6 +13,9 @@ INSTALLED_APPS = (
   'sorl',
   'devserver',
   'main', #abstract classes only
-
+  'compressor',
   'reddit',
 )
+
+COMPRESS_ENABLED = True
+COMPRESS_PRECOMPILERS = (('text/less', 'lessc {infile} {outfile}'),)

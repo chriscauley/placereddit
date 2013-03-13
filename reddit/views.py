@@ -6,8 +6,23 @@ from .models import SubReddit, Image
 
 import random,datetime
 
+def get_subreddit(slug=None,nsfw=None):
+  if slug == 'featured':
+    subreddits = SubReddit.objects.filter(featured=True)
+    r = random.choice(range(0,subreddits.count()))
+    subreddit = subreddits[r]
+  elif not slug or slug == 'random':
+    r = random.randint(0,SubReddit.objects.filter(nsfw=nsfw).count()-1)
+    subreddit = SubReddit.objects.filter(nsfw=nsfw)[r]
+  else:
+    subreddit = SubReddit.objects.get(slug=slug)
+  return subreddit
+
 #@cache_page(60 * 15)
 def index(request,subreddit=None,nsfw=False):
+  nsfw = bool(nsfw)
+  subreddit = get_subreddit(subreddit,nsfw)
+    
   sizes = (
     (100,100),
     (200,200),
@@ -16,25 +31,19 @@ def index(request,subreddit=None,nsfw=False):
     (100,100),
     (200,200),
     )
-  sizes = sizes*100
+  srs = SubReddit.objects.all()
   values = {
+    'subreddit': subreddit,
     'randint': lambda: random.choice(range(31)),
+    'subreddits': SubReddit.objects.filter(nsfw=nsfw),
     'sizes': sizes,
+    'nsfw': nsfw,
     }
   return TemplateResponse(request,"reddit.html",values)
 
-@cache_page(60 * 15)
+#@cache_page(60 * 15)
 def image(request,subreddit=None,nsfw=False,width=None,height=None,extension=None,num=None):
-  nsfw = nsfw or False
-  if subreddit == 'featured':
-    subreddits = SubReddit.objects.filter(featured=True)
-    r = random.randint(0,subreddits.count()-1)
-    subreddit = subreddits[r]
-  if not subreddit or subreddit == 'random':
-    r = random.randint(0,SubReddit.objects.filter(nsfw=nsfw).count()-1)
-    subreddit = SubReddit.objects.filter(nsfw=nsfw)[r]
-  else:
-    subreddit = SubReddit.objects.get(name=subreddit)
+  subreddit = get_subreddit(subreddit,nsfw)
   if subreddit.nsfw != nsfw:
     pass # return over_18 image with text
   images = Image.objects.filter(subreddit=subreddit)
@@ -42,11 +51,11 @@ def image(request,subreddit=None,nsfw=False,width=None,height=None,extension=Non
   image = random.choice(images)
   return image.crop_response(int(width),int(height))
 
-def random_image():
+def random_image(_max=200):
   subreddit = random.choice(SubReddit.objects.all())
   images = Image.objects.filter(subreddit=subreddit)
-  height =random.choice(range(100,1000))
-  width = random.choice(range(100,1000))
+  height =random.choice(range(100,_max))
+  width = random.choice(range(100,_max))
   images = images.filter(height__gte=height,width__gte=width)
   if not images:
     print "no image found: %s %sx%s"%(subreddit,width,height)
@@ -59,4 +68,5 @@ def test(n=50,f=random_image):
   while n>0:
     f()
     n-=1
-  print (datetime.datetime.now()-now).seconds
+  t = datetime.datetime.now()-now
+  print t.seconds,'\t',t.microseconds

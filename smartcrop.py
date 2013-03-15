@@ -49,7 +49,15 @@ def entropy_y(img):
     if y < dy:
       return out
 
-def prepare_image(image,thumbnail_size,x_crop_order,y_crop_order):
+def scale_image(image,size):
+  if image.mode != "RGB":
+    image = im.convert('RGB')
+ 
+  image.thumbnail(size, Image.ANTIALIAS)
+  return image
+
+
+def crop_image(image,thumbnail_size,x_crop_order,y_crop_order):
   x,y = image.size
   ratio_in = x / float(y)
   th_x, th_y = thumbnail_size
@@ -59,23 +67,11 @@ def prepare_image(image,thumbnail_size,x_crop_order,y_crop_order):
   if x < th_x and y < th_y:
     return image
 
-  if ratio_out < ratio_in: #image too wide
-    x_out = int(ratio_out*y)
-    dx = abs(x-x_out)
-    from_left = x_crop_order[:dx/10].count('0')*10
-    from_right = dx-from_left
-    im = image.crop((from_left,0,x-from_right,y))
-  elif ratio_out > ratio_in: #image too tall
-    y_out = int(x/ratio_out)
-    dy = abs(y-y_out)
-    from_top = y_crop_order[:dy/10].count('0')*10
-    from_bot = dy-from_top
-    im = image.crop((0,from_top,x,y-from_bot))
-  else: #it's already crop
-    im = image
+  dx = abs(x-x_out)
+  from_left = x_crop_order[:dx/10].count('0')*10
+  from_right = dx-from_left
 
-  if im.mode != "RGB":
-    im = im.convert('RGB')
-
-  im.thumbnail(thumbnail_size, Image.ANTIALIAS)
-  return im
+  dy = abs(y-y_out)
+  from_top = y_crop_order[:dy/10].count('0')*10
+  from_bot = dy-from_top
+  return image.crop((from_left,from_top,x-from_right,y-from_bot))

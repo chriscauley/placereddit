@@ -35,33 +35,55 @@ class Image(models.Model):
   y_crop_order = models.CharField(max_length=256,null=True,blank=True)
   x_crop_order = models.CharField(max_length=256,null=True,blank=True)
   date_added = models.DateTimeField(auto_now_add=True)
+  active = models.BooleanField(default=True)
   fname = property(lambda self: self.url.split('/')[-1])
   fpath = property(lambda self: os.path.join(settings.PPATH,'tmp',self.fname))
-  def delete(self,*args,**kwargs):
-    try:
-      os.remove(self.fpath)
-    except OSError:
-      pass
-    return super(Image,self).delete(*args,**kwargs)
+
   def save(self,*args,**kwargs):
-    if not self.width or not self.x_crop_order:
+    if not self.active:
+      for path in [self.fpath]+["%s_%s"%(self.fpath,i) for i in range(1,6)]:
+        try:
+          os.remove(path)
+        except OSError:
+          pass
+    if active and not self.width or not self.x_crop_order:
+      self.pull_from_imgur()
       I = self.get_PIL_object()
       self.width, self.height = I.size
       self.x_crop_order,self.y_crop_order = cache_entropies(I)
     super(Image,self).save(*args,**kwargs)
-  def get_PIL_object(self):
-    try:
-      f = open(self.fpath,'rb')
-    except IOError:
-      f = open(self.fpath,'w')
-      r = requests.get(self.url,stream=True)
-      f.write(r.raw.read())
-      f.close()
-      return self.get_PIL_object()
+
+  @property
+  def sizes_available(self):
+    w_inc = self.width/5
+    h_inc = self.height/5
+    return [(w_inc*i,h_inc*i) for i in range(1,6)]
+
+  def cache_all_sizes(self):
+    image = self.get_PIL_object()
+    for size in enumerate(self.sizes_available):
+      area = scale_image(image,size)
+      area.save("%s_%sx%s"%(self.fpath,width,height),format='jpeg')
+
+  def pull_from_imgur(self):
+    f = open(self.fpath,'w')
+    r = requests.get(self.url,stream=True)
+    f.write(r.raw.read())
+    f.close()
+
+  def get_PIL_object(self,width=None,height=None):
+    path = self.fpath
+    if width and height:
+      for size in enumerate(self.sizes_available):
+        if size[0]>width and size[1]>height:
+          path = "%s_%sx%s"%(self.fpath,size[0],size[1])
+
+    f = open(fpath,'rb')
     return _Image.open(f)
+
   def crop_response(self,width,height):
-    i = self.get_PIL_object()
-    area = prepare_image(i,(width,height),self.x_crop_order,self.y_crop_order)
+    i = get_PIL_object()
+    area = crop_image(i,(width,height),self.x_crop_order,self.y_crop_order)
     response = HttpResponse(mimetype="image/jpeg")
     area.save(response, format='jpeg')
     return response

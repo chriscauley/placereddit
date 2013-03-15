@@ -51,7 +51,7 @@ def image(request,subreddit=None,nsfw=False,width=None,height=None,extension=Non
   image = random.choice(images)
   return image.crop_response(int(width),int(height))
 
-def random_image(_max=200):
+def random_image(_max=1000):
   subreddit = random.choice(SubReddit.objects.all())
   images = Image.objects.filter(subreddit=subreddit)
   height =random.choice(range(100,_max))
@@ -63,7 +63,7 @@ def random_image(_max=200):
   image = random.choice(images)
   return image.crop_response(int(width),int(height))
 
-def test(n=50,f=random_image):
+def test(n=500,f=random_image):
   now = datetime.datetime.now()
   while n>0:
     f()

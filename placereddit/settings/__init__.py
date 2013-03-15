@@ -41,8 +41,10 @@ TEMPLATE_LOADERS = (
 )
 DATABASES = {
   'default': {
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': 'placereddit/placereddit.db',
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'placereddit',
+    'USER': 'postgres',
+    'PASSWORD': 'placereddit',
   }
 }
 LOGGING = {

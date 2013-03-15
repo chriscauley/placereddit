@@ -57,21 +57,30 @@ def scale_image(image,size):
   return image
 
 
-def crop_image(image,thumbnail_size,x_crop_order,y_crop_order):
+def crop_image(image,thumbnail_size,x_crop_order,y_crop_order,multiplier):
+  """
+  returns a cropped image.
+  image = PIL.Image object
+  thumbnail_size = (width,height) to be returned
+  x/y_crop_order = a "binary string" telling which side to crop from for each dimension
+    0 means left/top chunck is less entropic, 1 means right/bottom chunk is more entropic
+  multiplier = (1..10)
+    the crop orders are defaulted to 10px, but we're using pre-resized images.
+    pre-resized images are (1..10)/10 times the size of the original
+    so the multiplier tells the size of the slices
+  """
   x,y = image.size
-  ratio_in = x / float(y)
   th_x, th_y = thumbnail_size
-  ratio_out = th_x / float(th_y)
 
   #the image is smaller than the minimum thumbnail dimensions
   if x < th_x and y < th_y:
     return image
 
-  dx = abs(x-x_out)
-  from_left = x_crop_order[:dx/10].count('0')*10
+  dx = abs(x-th_x)
+  from_left = x_crop_order[:dx/int(multiplier)].count('0')*multiplier
   from_right = dx-from_left
 
-  dy = abs(y-y_out)
-  from_top = y_crop_order[:dy/10].count('0')*10
+  dy = abs(y-th_y)
+  from_top = y_crop_order[:dy/int(multiplier)].count('0')*multiplier
   from_bot = dy-from_top
   return image.crop((from_left,from_top,x-from_right,y-from_bot))

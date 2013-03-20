@@ -26,9 +26,9 @@ Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_2
 
 ...
 
-Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_80
+Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_20
 
-Eath number returns a different image from the selected subreddit!
+Each number returns a different image from the selected subreddit!
       </div>
     </div>
   </div>
@@ -70,7 +70,6 @@ Eath number returns a different image from the selected subreddit!
       The following subreddits are now live. Please contact me if you would like to see one added to this list.
     </p>
     <div class="row" style="text-align: center">
-      {{subreddits}}
       {% for sr in subreddits %}
       <div class="span3">
         <div class="well">

@@ -51,7 +51,7 @@ def entropy_y(img):
 
 def scale_image(image,size):
   if image.mode != "RGB":
-    image = im.convert('RGB')
+    image = image.convert('RGB')
  
   image.thumbnail(size, Image.ANTIALIAS)
   return image

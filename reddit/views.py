@@ -51,8 +51,8 @@ def image(request,subreddit=None,nsfw=False,width=None,height=None,extension=Non
   image = random.choice(images)
   return image.crop_response(int(width),int(height))
 
-def random_image(_max=1000):
-  subreddit = random.choice(SubReddit.objects.all())
+def random_image(_max=800):
+  subreddit = SubReddit.objects.get(slug='aww') #random.choice(SubReddit.objects.all())
   images = Image.objects.filter(subreddit=subreddit)
   height =random.choice(range(100,_max))
   width = random.choice(range(100,_max))

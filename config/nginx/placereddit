@@ -1,6 +1,6 @@
 server {
     listen   80;
-    server_name placereddit.com aineko.herefm.com;
+    server_name placereddit.com aineko.herefm.com new.placereddit.com 198.211.114.45;
 
     location / {
         uwsgi_pass  127.0.0.1:46536;

@@ -8,9 +8,7 @@ import random,datetime
 
 def get_subreddit(slug=None,nsfw=None):
   if slug == 'featured':
-    subreddits = SubReddit.objects.filter(featured=True)
-    r = random.choice(range(0,subreddits.count()))
-    subreddit = subreddits[r]
+    subreddit = SubReddit.objects.get_featured()
   elif not slug or slug == 'random':
     r = random.randint(0,SubReddit.objects.filter(nsfw=nsfw).count()-1)
     subreddit = SubReddit.objects.filter(nsfw=nsfw)[r]
@@ -22,15 +20,13 @@ def get_subreddit(slug=None,nsfw=None):
 def index(request,subreddit=None,nsfw=False):
   nsfw = bool(nsfw)
   subreddit = get_subreddit(subreddit,nsfw)
-    
-  sizes = (
-    (100,100),
-    (200,200),
-    (100,100),
-    (200,200),
-    (100,100),
-    (200,200),
-    )
+  nums = [100,100,200,300]
+  #sizes = [(random.choice(nums)-10,random.choice(nums)-10) for i in range(10)]
+  sizes = []
+  for w in nums:
+    sizes += [(w-10,h-10) for h in nums]
+  sizes = sizes[:-1]+ [(90,90)]*5
+  random.shuffle(sizes)
   srs = SubReddit.objects.all()
   values = {
     'subreddit': subreddit,

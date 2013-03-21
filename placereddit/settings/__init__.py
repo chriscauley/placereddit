@@ -3,8 +3,9 @@ SPATH = os.path.normpath(os.path.join(os.path.dirname(__file__), '..')) # direct
 PPATH = os.path.join(SPATH,"..") # project root
 UPLOAD_DIR = 'uploads'
 
-DEBUG = TEMPLATE_DEBUG = True
+DEBUG = TEMPLATE_DEBUG = False
 ADMINS = MANAGERS = (
+  ('chriscauley','chris@lablackey.com'),
 )
 
 MEDIA_ROOT = os.path.join(PPATH,'media/')

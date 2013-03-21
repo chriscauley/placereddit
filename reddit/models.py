@@ -6,7 +6,18 @@ from sorl.thumbnail import ImageField
 from PIL import Image as _Image
 
 from smartcrop import cache_entropies, crop_image, scale_image
-import requests, re, os, StringIO
+import requests, re, os, StringIO,datetime
+
+class SubRedditManager(models.Manager):
+  def get_featured(self,*args,**kwargs):
+    reddits = self.filter(*args,**kwargs).filter(featured=True)
+    try:
+      return reddits.get(last_featured=datetime.date.today())
+    except SubReddit.DoesNotExist:
+      reddit = reddits.order_by('last_featured')[0]
+      reddit.last_featured = datetime.date.today()
+      reddit.save()
+      return reddit
 
 class SubReddit(models.Model):
   name = models.CharField(max_length=255,unique=True)
@@ -14,6 +25,8 @@ class SubReddit(models.Model):
   nsfw = models.BooleanField(default=False)
   get_absolute_url = lambda self: "/r/%s%s/"%(self.slug,"/nsfw" if self.nsfw else "")
   featured = models.BooleanField(default=False)
+  last_featured = models.DateField(default=datetime.date.today)
+  objects = SubRedditManager()
   def save(self,*args,**kwargs):
     super(SubReddit,self).save(*args,**kwargs)
     self.pull_from_imgur()

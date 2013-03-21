@@ -51,6 +51,13 @@ def image(request,subreddit=None,nsfw=False,width=None,height=None,extension=Non
   image = random.choice(images)
   return image.crop_response(int(width),int(height))
 
+def test_page(request):
+  values = {
+    'randint': lambda: random.choice(range(31)),
+    'widths': range(100,200),
+    }
+  return TemplateResponse(request,"test_page.html",values)
+
 def random_image(_max=800):
   subreddit = SubReddit.objects.get(slug='aww') #random.choice(SubReddit.objects.all())
   images = Image.objects.filter(subreddit=subreddit)
@@ -62,6 +69,7 @@ def random_image(_max=800):
     return
   image = random.choice(images)
   return image.crop_response(int(width),int(height))
+
 
 def test(n=500,f=random_image):
   now = datetime.datetime.now()

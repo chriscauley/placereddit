@@ -11,6 +11,7 @@ urlpatterns = patterns(
   url(r'^admin/', include(admin.site.urls)),
   url(r'^r/', include('reddit.urls')),
   url(r'^$',redirect_to, {'url': '/r/featured/'}),
+  url(r'^test_page/$','reddit.views.test_page'),
 )
 
 if settings.DEBUG:

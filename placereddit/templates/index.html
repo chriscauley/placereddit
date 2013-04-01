@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Place Reddit - Infinite Placeholder Images</h2>
+<div class="span6">
+  <p class="lead">
+    Place Reddit is an easy and exciting way to get varied pictures for your development/design needs.
+  </p>
+  <div class="well" style="white-space: pre">
+    Like this: http://placereddit.com/r/{{ subreddit.slug }}/100x75
+
+    Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_1
+
+    Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_2
+
+    ...
+
+    ...
+
+    Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_20
+
+    Each number returns a different image from the selected subreddit!
+  </div>
+</div>
+{% endblock %}

@@ -25,9 +25,15 @@
   <body>
     <div id="wrapper" class="container">
       <div id="header">
-	{% block header %}{% include "header.html" %}{% endblock %}
+        <ul class="nav nav-tabs">
+          <li><a href="/{{ r }}/{{ slug }}/">Home</a></li>
+          <li><a href="/{{ r }}/{{ slug }}/how_to_use/">How to Use</a></li>
+          <li><a href="/{{ r }}/{{ slug }}/how_it_works/">How it Works</a></li>
+          <li><a href="/{{ r }}/{{ slug }}/list_of_subreddits/">List of Subreddits</a></li>
+          <li><a href="/{{ r }}/{{ slug }}/django/">Django Plugin (sorl)</a></li>
+        </ul>
       </div>
-      <div id="content" class="row">
+      <div id="content">
 	{% block content %}
 	<div id="main">{% block main %}{% endblock %}</div>
 	<div id="side">{% block side %}{% endblock %}</div>

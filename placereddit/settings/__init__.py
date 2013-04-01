@@ -3,7 +3,7 @@ SPATH = os.path.normpath(os.path.join(os.path.dirname(__file__), '..')) # direct
 PPATH = os.path.join(SPATH,"..") # project root
 UPLOAD_DIR = 'uploads'
 
-DEBUG = TEMPLATE_DEBUG = False
+DEBUG = TEMPLATE_DEBUG = True
 ADMINS = MANAGERS = (
   ('chriscauley','chris@lablackey.com'),
 )
@@ -83,8 +83,14 @@ SECRET_KEY = '5i4*stnx^12a+wow1_lrz(jb!d*e^tkzq+t8o)_5f-2$n9k*@a'
 
 # Remove characters that are invalid for python modules.
 machine = re.sub('[^A-z0-9._]', '_', socket.gethostname())
+
+EMAIL_HOST = 'smtp.mandrillapp.com'
+EMAIL_SUBJECT_PREFIX = "[Placereddit] "
+DEFAULT_FROM_EMAIL = "noreply@placereddit.org"
+SERVER_EMAIL = "noreply@placereddit.org"
+
 try:
-  istr = 'settings.' + machine
+  istr = 'placereddit.settings.' + machine
   tmp = __import__(istr)
   mod = sys.modules[istr]
 except ImportError:

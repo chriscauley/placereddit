@@ -16,10 +16,11 @@ def get_subreddit(slug=None,nsfw=None):
     subreddit = SubReddit.objects.get(slug=slug)
   return subreddit
 
-#@cache_page(60 * 15)
-def index(request,subreddit=None,nsfw=False):
-  nsfw = bool(nsfw)
-  subreddit = get_subreddit(subreddit,nsfw)
+def index(request,slug=None,template=None):
+  if not template:
+    template = "index"
+  nsfw = request.path.startswith('nsfw')
+  subreddit = get_subreddit(slug,nsfw)
   nums = [100,100,200,300]
   #sizes = [(random.choice(nums)-10,random.choice(nums)-10) for i in range(10)]
   sizes = []
@@ -30,19 +31,22 @@ def index(request,subreddit=None,nsfw=False):
   srs = SubReddit.objects.all()
   values = {
     'subreddit': subreddit,
+    'slug': subreddit.slug,
     'randint': lambda: random.choice(range(31)),
     'subreddits': SubReddit.objects.filter(nsfw=nsfw),
     'sizes': sizes,
     'nsfw': nsfw,
+    'r': 'nsfw' if nsfw else 'r',
     }
-  return TemplateResponse(request,"reddit.html",values)
+  return TemplateResponse(request,template+".html",values)
 
 #@cache_page(60 * 15)
-def image(request,subreddit=None,nsfw=False,width=None,height=None,extension=None,num=None):
-  subreddit = get_subreddit(subreddit,nsfw)
+def image(request,slug=None,width=None,height=None,extension=None,num=None):
+  nsfw = request.path.startswith('nsfw')
+  subreddit = get_subreddit(slug,nsfw)
   if subreddit.nsfw != nsfw:
     pass # return over_18 image with text
-  images = Image.objects.filter(subreddit=subreddit)
+  images = Image.objects.filter(subreddit=subreddit,active=True)
   images = images.filter(height__gte=height,width__gte=width)
   image = random.choice(images)
   return image.crop_response(int(width),int(height))

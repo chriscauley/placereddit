@@ -34,13 +34,15 @@ class SubReddit(models.Model):
     url = "http://imgur.com/r/%s/rss"%self.slug
     html = requests.get(url).text
     imgs = re.findall(r'img src=&quot;(http://i.imgur.com/[\w\d]+\.jpg)&quot;',html)
-    if self.image_set.count() > 60:
-      for i in self.image_set.all()[60:]:
-        i.delete()
+    new_images = []
     for i,url in enumerate(imgs):
       o,new = Image.objects.get_or_create(url=url,subreddit=self)
       if new:
-        print "Image created! %s"%o
+        new_images.append(unicode(o))
+    if self.image_set.count() > 60:
+      for i in self.image_set.all()[60:]:
+        i.mark_inactive()
+    return new_images
   __unicode__ = lambda self: self.name
 
 class Image(models.Model):
@@ -55,22 +57,21 @@ class Image(models.Model):
   fname = property(lambda self: self.url.split('/')[-1])
 
   fpath = property(lambda self: os.path.join(settings.PPATH,'tmp',self.fname))
-  def delete(self,*args,**kwargs):
+  def delete_images(self):
     for path in [self.fpath]+["%s_%sx%s"%(self.fpath,w,h) for w,h in self.sizes_available]:
       try:
         os.remove(path)
-        print "success!"
       except OSError:
-        print "fail"
+        print "failed at deleting: %s"%path
+  def delete(self,*args,**kwargs):
+    self.delete_images()
     super(Image,self).delete(*args,**kwargs)
-
+  def mark_inactive(self):
+    if self.active:
+      self.delete_images()
+      self.active = False
+      self.save()
   def save(self,*args,**kwargs):
-    if not self.active:
-      for path in [self.fpath]+["%s_%sx%s"%(self.fpath,w,h) for w,h in self.sizes_available]:
-        try:
-          os.remove(path)
-        except OSError:
-          pass
     if self.active and not self.width or not self.x_crop_order:
       self.pull_from_imgur()
       I = self.get_PIL_object()
@@ -123,6 +124,24 @@ class Image(models.Model):
   class Meta:
     ordering = ("-date_added",)
   __unicode__ = lambda self: "%s (%s)"%(self.url,self.subreddit)
+
+class Subject(models.Model):
+  name = models.CharField(max_length=255)
+  nsfw = models.BooleanField(default=False)
+  subreddits = models.ManyToManyField(SubReddit,blank=True)
+  __unicode__ = lambda self: self.name
+  @classmethod
+  def fast_add(clss,name,slugs,nsfw=False):
+    """lazy way to add a bunch of subreddits from the command line"""
+    subject,new = clss.objects.get_or_create(name=name,nsfw=nsfw)
+    if new:
+      print "New Subject: %s"%subject
+    for slug in slugs:
+      reddit,new = SubReddit.objects.get_or_create(name=slug,slug=slug,nsfw=nsfw)
+      if new:
+        print "New SubReddit: %s"%reddit
+      subject.subreddits.add(reddit)
+    subject.save()
 
 def test():
   s,new = SubReddit.objects.get_or_create(name='aww',slug='aww')

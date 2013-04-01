@@ -1,18 +1,11 @@
-from .models import SubReddit
-
-import re, random
-
-def get_subreddit(request):
-  reg_exp = re.compile(r'^r/([\w\d\_\-]+)/(nsfw/)?')
-  slug, nsfw = reg_exp.match(request.path)
-  if slug == 'featured':
-    subreddit = SubReddit.objects.get_featured()
-  elif not slug or slug == 'random':
-    r = random.randint(0,SubReddit.objects.filter(nsfw=nsfw).count()-1)
-    subreddit = SubReddit.objects.filter(nsfw=nsfw)[r]
-  else:
-    subreddit = SubReddit.objects.get(slug=slug)
-  return {
-    'subreddit': subreddit,
-    'nsfw': bool(nsfw),
-    }
+def nav(request):
+  """
+  nav should be a list of dictionaries like { 'name':str, 'url':str }
+  "/" should be added after the for loop since s.startswith("/"[1:]) is always true
+  """
+  nav = [
+    ]
+  for n in nav:
+    if request.path.startswith(n['url'][1:]):
+      n['current'] = True
+  return { 'nav': nav }

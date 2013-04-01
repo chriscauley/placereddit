@@ -36,10 +36,14 @@ class SubReddit(models.Model):
     imgs = re.findall(r'img src=&quot;(http://i.imgur.com/[\w\d]+\.jpg)&quot;',html)
     new_images = []
     for i,url in enumerate(imgs):
-      o,new = Image.objects.get_or_create(url=url,subreddit=self)
-      if new:
-        new_images.append(unicode(o))
-    if self.image_set.count() > 60:
+      try:
+        o,new = Image.objects.get_or_create(url=url,subreddit=self)
+        if new:
+          new_images.append(unicode(o))
+      except IOError: #! TODO apparently some images are too large?!
+        o.active = False
+        o.save()
+    if self.image_set.filter(active=True).count() > 60:
       for i in self.image_set.all()[60:]:
         i.mark_inactive()
     return new_images

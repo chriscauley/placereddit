@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="span6">
+    <div style="text-align: center;">
+      <img src="{{ STATIC_URL }}placereddit.png" width="450" height="134" />
+    </div>
+    <p class="lead home-lead">
+      Place Reddit is an easy and exciting way to get varied pictures for your development/design needs.
+    </p>
+    <div class="well" style="white-space: pre">
+Like this: http://placereddit.com/r/{{ subreddit.slug }}/100x75
+
+Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_1
+
+Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_2
+
+Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_20
+
+Each number (1-20) gives a different image!
+    </div>
+  </div>
+  <div class="span6">
+    {% for row in side_rows %}
+    <div class="side_container">
+      {% for w,h in row %}
+      <img src="/{{ r }}/{{ slug }}/{{ w }}x{{ h }}_{{ randint.next }}" width="{{ w }}" height="{{ h }}"
+           class="item" style="height: {{ h }}px !important;" />
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  {% comment %}
+  <div class="span12 bottom_container">
+    {% for w,h in sizes %}
+    <img src="/{{ r }}/{{ slug }}/{{ w }}x{{ h }}_{{ randint.next }}" width="{{ w }}" height="{{ h }}"
+         class="item" style="height: {{ h }}px !important;" />
+    {% endfor %}
+  </div>
+  {% endcomment %}
+</div>
+{% endblock %}

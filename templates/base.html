@@ -1,0 +1,58 @@
+{% load compress %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    {% compress css %}
+    <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}less/base.less" />
+    {% endcompress %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}less/bootstrap/js/bootstrap-collapse.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}less/bootstrap/js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.masonry.min.js"></script>
+    <!--[if IE 7]>
+      <link rel="stylesheet" type="text/css" href="/static/design/ie7.css"/>
+    <![endif]-->
+    <!--[if IE 8]>
+      <link rel="stylesheet" type="text/css" href="/static/design/ie8.css"/>
+    <![endif]-->
+
+    {% block extrahead %}{% endblock %}
+    {% block extra-head %}{# compromise =D #}{% endblock %}
+  </head>
+
+  <body>
+    <div id="wrapper" class="container">
+      <div id="header">
+        <ul class="nav nav-tabs">
+          <li><a href="/{{ r }}/{{ slug }}/">Home</a></li>
+          {# <li><a href="/{{ r }}/{{ slug }}/how_to_use/">How to Use</a></li> #}
+          {# <li><a href="/{{ r }}/{{ slug }}/how_it_works/">How it Works</a></li> #}
+          <li><a href="/{{ r }}/{{ slug }}/list_of_subreddits/">List of Subreddits</a></li>
+          <li><a href="/{{ r }}/{{ slug }}/django/">Django Plugin (sorl)</a></li>
+        </ul>
+      </div>
+      <div id="content">
+	{% block content %}
+	<div id="main">{% block main %}{% endblock %}</div>
+	<div id="side">{% block side %}{% endblock %}</div>
+	{% endblock %}
+      <div id="footer">{% include "footer.html" %}</div>
+    </div>
+      <script type="text/javascript">
+$(function(){
+  $('.side_container').masonry({
+    // options
+    itemSelector : '.item',
+    columnWidth : 115,
+  });
+  $('.bottom_container').masonry({
+    // options
+    itemSelector : '.item',
+    columnWidth : 117,
+  });
+});
+      </script>
+  </body>
+</html>

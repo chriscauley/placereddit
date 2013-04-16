@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Place Reddit - How it works</h2>
+<p>
+  I tirelessly surf reddit 24/7 to find the best images from each subreddit
+  and then personally crop them by hand and serve them to you.
+</p>
+<p>
+  Just kidding, it's actually very simple.
+</p>
+<ol>
+  <li>
+    A script parses http://imgur.com/r/SUBREDDIT/rss every 6 hours.
+  </li>
+  <li>
+    After dowloading, the image is scaled and anti-aliased at 10 sizes and then cached.
+  </li>
+  <li>
+    When a request is made an image is selected at random from the latest 80 images from each subreddit.
+  </li>
+  <li>
+    The image is cropped to the appropriate dimensions and sent out.
+  </li>
+  <li>
+    Results are cached for 1 hour to help speed along repeated views.
+  </li>
+</ol>
+{% endblock %}

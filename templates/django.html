@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="span2">
+    {% for i in "1234" %}
+    <img src="/{{ r }}/{{ slug }}/140x140_{{ randint.next }}"
+         style="margin-bottom: 15px;"/>
+    {% endfor %}
+  </div>
+  <div class="span8" class="item">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <img src="{{ STATIC_URL }}placereddit.png" width="450" height="134" />
+      <h2>Django plugin (sorl-thumbnail fork)</h2>
+    </div>
+    <ol>
+      <li>
+        Remove sorl and install forked version.
+        <div class="well">
+          $ pip uninstall sorl-thumbnail
+          <br />
+          $ pip install -e git+git://github.com/chriscauley/sorl-thumbnail.git#egg=sorl-thumbnail
+        </div>
+      </li>
+      <li>
+        Add the following line to your settings file.
+        <div class="well">
+          THUMBNAIL_DUMMY_SOURCE = 'placereddit'
+        </div>
+      </li>
+      <li>
+        Add the following setting to customize the images.
+        <div class="well">{% if nsfw %}
+          THUMBNAIL_SUBREDDITS = ['nsfw/girlswithneonhair','nsfw/gonewild']{% else %}
+          THUMBNAIL_SUBREDDITS = ['aww','ferrets,'cats']{% endif %}
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="span2">
+    {% for i in "1234" %}
+    <img src="/{{ r }}/{{ slug }}/140x140_{{ randint.next }}"
+         style="margin-bottom: 15px;"/>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

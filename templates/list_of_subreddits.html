@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align: center;">
+  <img src="{{ STATIC_URL }}placereddit.png" width="450" height="134" />
+</div>
+<p class="lead">
+  The following subreddits are now live. Please contact me if you would like to see one added to this list.
+</p>
+<div class="row" style="text-align: center">
+  {% for sr in subreddits %}
+  <div class="span3">
+    <div class="well">
+      <a href="{{ sr.get_absolute_url }}"><img src="{{ sr.get_absolute_url }}180x165_0" width="180" height="165" style="height: 165px !important; margin-bottom: 5px;"/></a>
+      <a href="{{ sr.get_absolute_url }}">{{ sr.name }}</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

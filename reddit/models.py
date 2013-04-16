@@ -12,8 +12,8 @@ class SubRedditManager(models.Manager):
   def get_featured(self,*args,**kwargs):
     reddits = self.filter(*args,**kwargs).filter(featured=True)
     try:
-      return reddits.get(last_featured=datetime.date.today())
-    except SubReddit.DoesNotExist:
+      return reddits.filter(last_featured=datetime.date.today())[0]
+    except IndexError:
       reddit = reddits.order_by('last_featured')[0]
       reddit.last_featured = datetime.date.today()
       reddit.save()
@@ -48,6 +48,8 @@ class SubReddit(models.Model):
         i.mark_inactive()
     return new_images
   __unicode__ = lambda self: self.name
+  class Meta:
+    ordering = ('name',)
 
 class Image(models.Model):
   subreddit = models.ForeignKey(SubReddit)

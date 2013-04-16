@@ -2,8 +2,8 @@ from django.contrib import admin
 from .models import SubReddit, Image, Subject
 
 class SubRedditAdmin(admin.ModelAdmin):
-  list_display = ("__unicode__",'featured','nsfw','last_featured','image_count')
-  list_editable = ('featured','nsfw','last_featured')
+  list_display = ("__unicode__",'name','featured','nsfw','last_featured','image_count')
+  list_editable = ('name','featured','nsfw','last_featured')
   readonly_fields = ('image_count',)
   def image_count(self,obj):
     images = obj.image_set.all()

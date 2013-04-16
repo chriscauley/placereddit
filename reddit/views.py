@@ -13,7 +13,7 @@ def get_subreddit(slug=None,nsfw=None):
     r = random.randint(0,SubReddit.objects.filter(nsfw=nsfw).count()-1)
     subreddit = SubReddit.objects.filter(nsfw=nsfw)[r]
   else:
-    subreddit = SubReddit.objects.get(slug=slug)
+    subreddit = SubReddit.objects.get(slug__iexact=slug)
   return subreddit
 
 def index(request,slug=None,template=None):
@@ -21,19 +21,34 @@ def index(request,slug=None,template=None):
     template = "index"
   nsfw = request.path.startswith('nsfw')
   subreddit = get_subreddit(slug,nsfw)
-  nums = [100,100,200,300]
-  #sizes = [(random.choice(nums)-10,random.choice(nums)-10) for i in range(10)]
+  side_sizes = [
+    [(100,100),(330,100)],
+    [(215,100),(100,100),(100,100)],
+    [(100,100),(100,100),(215,100)],
+    [(215,215),(100,100),(100,100),(215,100)],
+    [(330,100),(100,100)],
+    [(215,100),(100,100),(100,100)],
+    [(100,100),(215,100),(100,100)],
+    [(100,100),(100,215),(100,100),(100,100),(100,100),(215,100),],
+    ]
+  side_sizes = (side_sizes*2)[random.choice(range(len(side_sizes))):]
+  side_sizes = side_sizes[:4]
+  nums = [100,100,215,330]
   sizes = []
   for w in nums:
-    sizes += [(w-10,h-10) for h in nums]
-  sizes = sizes[:-1]+ [(90,90)]*5
+    sizes += [(w,h) for h in nums]
+  sizes = sizes[:-1]+ [(215,100)]*5
   random.shuffle(sizes)
+  sizes = sizes[:-4]
   srs = SubReddit.objects.all()
+  randints = range(21)
+  random.shuffle(randints)
   values = {
     'subreddit': subreddit,
     'slug': subreddit.slug,
-    'randint': lambda: random.choice(range(31)),
-    'subreddits': SubReddit.objects.filter(nsfw=nsfw),
+    'randint': (i for i in randints*2),
+    'subreddits': [s for s in SubReddit.objects.filter(nsfw=nsfw) if s.image_set.count()>20],
+    'side_rows': side_sizes,
     'sizes': sizes,
     'nsfw': nsfw,
     'r': 'nsfw' if nsfw else 'r',

@@ -25,7 +25,7 @@ Each number (1-20) gives a different image!
     {% for row in side_rows %}
     <div class="side_container">
       {% for w,h in row %}
-      <img src="/{{ r }}/{{ slug }}/{{ w }}x{{ h }}_{{ randint.next }}" width="{{ w }}" height="{{ h }}"
+      <img src="/{{ r }}/{{ slug }}/{{ w }}/{{ h }}/{{ randint.next }}/" width="{{ w }}" height="{{ h }}"
            class="item" style="height: {{ h }}px !important;" />
       {% endfor %}
     </div>
@@ -34,7 +34,7 @@ Each number (1-20) gives a different image!
   {% comment %}
   <div class="span12 bottom_container">
     {% for w,h in sizes %}
-    <img src="/{{ r }}/{{ slug }}/{{ w }}x{{ h }}_{{ randint.next }}" width="{{ w }}" height="{{ h }}"
+    <img src="/{{ r }}/{{ slug }}/{{ w }}/{{ h }}/{{ randint.next }}/" width="{{ w }}" height="{{ h }}"
          class="item" style="height: {{ h }}px !important;" />
     {% endfor %}
   </div>

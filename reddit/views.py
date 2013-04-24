@@ -63,7 +63,10 @@ def image(request,slug=None,width=None,height=None,extension=None,num=None):
     pass # return over_18 image with text
   images = Image.objects.filter(subreddit=subreddit,active=True)
   images = images.filter(height__gte=height,width__gte=width)
-  image = random.choice(images)
+  if not num:
+    num = 0
+  index = int(num)%images.count()
+  image = images[index]
   return image.crop_response(int(width),int(height))
 
 def test_page(request):

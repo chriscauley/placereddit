@@ -25,15 +25,6 @@ MIDDLEWARE_CLASSES = (
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
 )
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/cache/django/',
-        'OPTIONS': {
-            'MAX_ENTRIES': 33000
-        }
-    }
-}
 TEMPLATE_DIRS = (os.path.join(SPATH,'templates'),)
 #STATICFILES_DIRS = (os.path.join(SPATH,'static'),)
 TEMPLATE_LOADERS = (

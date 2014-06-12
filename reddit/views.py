@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import cache_page
@@ -5,6 +6,9 @@ from django.views.decorators.cache import cache_page
 from .models import SubReddit, Image
 
 import random,datetime
+
+def redirect(request,url=''):
+  return HttpResponseRedirect(url)
 
 def get_subreddit(slug=None,nsfw=None):
   if slug == 'featured':

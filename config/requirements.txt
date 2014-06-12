@@ -1,14 +1,12 @@
-django==1.4
-south==0.7.6
-PIL==1.1.7 #install me with apt-get!
--e git+https://github.com/sehmaschine/django-grappelli.git@grappelli_2_4#egg=django-grappelli
+django
+south
+django-suit
 simplejson==2.1.2
 -e git+https://github.com/chriscauley/sorl-thumbnail.git#egg=sorl-thumbnail
-django-devserver==0.4
-#we need this but there's a problem with the pip version, mx.DateTime problem
-psycopg2==2.4.5
+django-devserver
+psycopg2
 django-registration==0.8
 -e git+https://github.com/chriscauley/Django-Crop-Override-Field.git#egg=django-crop-override-field
 django-password-reset
-django_compressor==1.2
-requests==1.1.0
+django_compressor
+requests

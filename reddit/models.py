@@ -53,7 +53,7 @@ class SubReddit(models.Model):
 
 class Image(models.Model):
   subreddit = models.ForeignKey(SubReddit)
-  url = models.URLField(verify_exists=False)
+  url = models.URLField()
   width = models.IntegerField(default=0)
   height = models.IntegerField(default=0)
   y_crop_order = models.CharField(max_length=1024,null=True,blank=True)

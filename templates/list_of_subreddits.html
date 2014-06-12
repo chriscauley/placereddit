@@ -8,9 +8,9 @@
 </p>
 <div class="row" style="text-align: center">
   {% for sr in subreddits %}
-  <div class="span3">
+  <div class="col-xs-3">
     <div class="well">
-      <a href="{{ sr.get_absolute_url }}"><img src="{{ sr.get_absolute_url }}180/165/0/" width="180" height="165" style="height: 165px !important; margin-bottom: 5px;"/></a>
+      <a href="{{ sr.get_absolute_url }}"><img src="{{ sr.get_absolute_url }}180/165/0/" style="width: 100%; margin-bottom: 5px;"/></a>
       <a href="{{ sr.get_absolute_url }}">{{ sr.name }}</a>
     </div>
   </div>

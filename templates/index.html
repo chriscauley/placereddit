@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="span6">
+  <div class="col-xs-6">
     <div style="text-align: center;">
       <img src="{{ STATIC_URL }}placereddit.png" width="450" height="134" />
     </div>
@@ -21,7 +21,7 @@ Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_20
 Each number (1-20) gives a different image!
     </div>
   </div>
-  <div class="span6">
+  <div class="col-xs-6">
     {% for row in side_rows %}
     <div class="side_container">
       {% for w,h in row %}
@@ -32,7 +32,7 @@ Each number (1-20) gives a different image!
     {% endfor %}
   </div>
   {% comment %}
-  <div class="span12 bottom_container">
+  <div class="col-xs-12 bottom_container">
     {% for w,h in sizes %}
     <img src="/{{ r }}/{{ slug }}/{{ w }}/{{ h }}/{{ randint.next }}/" width="{{ w }}" height="{{ h }}"
          class="item" style="height: {{ h }}px !important;" />

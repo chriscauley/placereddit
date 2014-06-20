@@ -41,8 +41,7 @@ class SubReddit(models.Model):
         if new:
           new_images.append(unicode(o))
       except IOError: #! TODO apparently some images are too large?!
-        o.active = False
-        o.save()
+        pass
     if self.image_set.filter(active=True).count() > 60:
       for i in self.image_set.all()[60:]:
         i.mark_inactive()
@@ -106,6 +105,7 @@ class Image(models.Model):
 
   def get_PIL_object(self,width=None,height=None):
     path = self.fpath
+    print settings.PPATH
     if width and height:
       for size in self.sizes_available:
         if size[0]>width and size[1]>height:

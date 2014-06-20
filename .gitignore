@@ -6,3 +6,4 @@ tmp/*
 src/*
 .static/*
 *.sql
+settings/local.py

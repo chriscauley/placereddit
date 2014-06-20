@@ -8,9 +8,9 @@ ADMINS = MANAGERS = (
   ('chriscauley','chris@lablackey.com'),
 )
 
-MEDIA_ROOT = os.path.join(PPATH,'media/')
+MEDIA_ROOT = os.path.join(PPATH,'.media/')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(PPATH,'static/')
+STATIC_ROOT = os.path.join(PPATH,'.static/')
 STATIC_URL = '/static/'
 
 STATICFILES_FINDERS = (

@@ -105,7 +105,6 @@ class Image(models.Model):
 
   def get_PIL_object(self,width=None,height=None):
     path = self.fpath
-    print settings.PPATH
     if width and height:
       for size in self.sizes_available:
         if size[0]>width and size[1]>height:
@@ -123,7 +122,7 @@ class Image(models.Model):
         multiplier = i+1
         break
     area = crop_image(image,(width,height),self.x_crop_order,self.y_crop_order,multiplier)
-    response = HttpResponse(mimetype="image/jpeg")
+    response = HttpResponse(content_type="image/jpeg")
     area.save(response, format='jpeg')
     return response
     

@@ -8,9 +8,9 @@ ADMINS = MANAGERS = (
   ('chriscauley','chris@lablackey.com'),
 )
 
-MEDIA_ROOT = os.path.join(PPATH,'media/')
+MEDIA_ROOT = os.path.join(PPATH,'.media/')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(PPATH,'static/')
+STATIC_ROOT = os.path.join(PPATH,'.static/')
 STATIC_URL = '/static/'
 
 STATICFILES_FINDERS = (
@@ -70,7 +70,6 @@ USE_I18N = USE_L10N = USE_TZ = True
 
 ROOT_URLCONF = 'urls'
 #WSGI_APPLICATION = 'placereddit.wsgi.application'
-SECRET_KEY = '5i4*stnx^12a+wow1_lrz(jb!d*e^tkzq+t8o)_5f-2$n9k*@a'
 
 # Remove characters that are invalid for python modules.
 machine = re.sub('[^A-z0-9._]', '_', socket.gethostname())
@@ -80,20 +79,15 @@ EMAIL_SUBJECT_PREFIX = "[Placereddit] "
 DEFAULT_FROM_EMAIL = "noreply@placereddit.org"
 SERVER_EMAIL = "noreply@placereddit.org"
 
-try:
-  istr = 'settings.' + machine
-  tmp = __import__(istr)
-  mod = sys.modules[istr]
-except ImportError:
-  print "No %r module found for this machine" % istr
-else:
-  for setting in dir(mod):
-    if setting == setting.upper():
-      setattr(sys.modules[__name__], setting, getattr(mod, setting))
-
-try:
-  from local_settings import *
-except ImportError:
-  pass
+for istr in ['settings.' + machine,'settings.local']:
+  try:
+    tmp = __import__(istr)
+    mod = sys.modules[istr]
+  except ImportError:
+    print "No %r module found for this machine" % istr
+  else:
+    for setting in dir(mod):
+      if setting == setting.upper():
+        setattr(sys.modules[__name__], setting, getattr(mod, setting))
 
 from .apps import *

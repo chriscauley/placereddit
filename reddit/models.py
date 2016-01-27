@@ -41,8 +41,7 @@ class SubReddit(models.Model):
         if new:
           new_images.append(unicode(o))
       except IOError: #! TODO apparently some images are too large?!
-        o.active = False
-        o.save()
+        pass
     if self.image_set.filter(active=True).count() > 60:
       for i in self.image_set.all()[60:]:
         i.mark_inactive()
@@ -123,7 +122,7 @@ class Image(models.Model):
         multiplier = i+1
         break
     area = crop_image(image,(width,height),self.x_crop_order,self.y_crop_order,multiplier)
-    response = HttpResponse(mimetype="image/jpeg")
+    response = HttpResponse(content_type="image/jpeg")
     area.save(response, format='jpeg')
     return response
     

@@ -4,5 +4,6 @@
 .environ/*
 tmp/*
 src/*
-static/*
+.static/*
 *.sql
+settings/local.py

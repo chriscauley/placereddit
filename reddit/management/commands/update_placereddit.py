@@ -10,5 +10,3 @@ class Command (BaseCommand):
       images = s.pull_from_imgur()
       if images:
         results.append("%s images %s"%(s,len(images)))
-    if results:
-      mail_admins('New Images','\n'.join(results))

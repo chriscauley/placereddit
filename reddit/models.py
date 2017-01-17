@@ -33,11 +33,16 @@ class SubReddit(models.Model):
   def pull_from_imgur(self):
     url = "http://imgur.com/r/%s"%self.slug
     html = requests.get(url).text
-    imgs = re.findall(r'src="(//i.imgur.com/[\w\d]+\.jpg)"',html)
+    imgs = re.findall(r'href="/r/[^/]+/([^"]+)"',html)
     new_images = []
-    for i,url in enumerate(imgs):
+    for i,s in enumerate(imgs):
+      url = "http://i.imgur.com/%s.jpg"%s
+      print s
+      if s in ["new","top"]:
+        continue
+      print url
       try:
-        o,new = Image.objects.get_or_create(url="http:"+url,subreddit=self)
+        o,new = Image.objects.get_or_create(url=url,subreddit=self)
         if new:
           new_images.append(unicode(o))
       except IOError,e: #! TODO apparently some images are too large?!

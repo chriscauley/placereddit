@@ -1,57 +1,69 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'SubReddit'
-        db.create_table('reddit_subreddit', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('nsfw', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('reddit', ['SubReddit'])
+    dependencies = [
+    ]
 
-        # Adding model 'Image'
-        db.create_table('reddit_image', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('subreddit', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['reddit.SubReddit'])),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('width', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('height', self.gf('django.db.models.fields.IntegerField')(default=0)),
-        ))
-        db.send_create_signal('reddit', ['Image'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'SubReddit'
-        db.delete_table('reddit_subreddit')
-
-        # Deleting model 'Image'
-        db.delete_table('reddit_image')
-
-
-    models = {
-        'reddit.image': {
-            'Meta': {'ordering': "('-id',)", 'object_name': 'Image'},
-            'height': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'subreddit': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['reddit.SubReddit']"}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
-            'width': ('django.db.models.fields.IntegerField', [], {'default': '0'})
-        },
-        'reddit.subreddit': {
-            'Meta': {'object_name': 'SubReddit'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'nsfw': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'slug': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['reddit']
+    operations = [
+        migrations.CreateModel(
+            name='Image',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('url', models.URLField()),
+                ('width', models.IntegerField(default=0)),
+                ('height', models.IntegerField(default=0)),
+                ('y_crop_order', models.CharField(max_length=1024, null=True, blank=True)),
+                ('x_crop_order', models.CharField(max_length=1024, null=True, blank=True)),
+                ('date_added', models.DateTimeField(auto_now_add=True)),
+                ('active', models.BooleanField(default=True)),
+            ],
+            options={
+                'ordering': ('-date_added',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Subject',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=255)),
+                ('nsfw', models.BooleanField(default=False)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='SubReddit',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(unique=True, max_length=255)),
+                ('slug', models.CharField(unique=True, max_length=255)),
+                ('nsfw', models.BooleanField(default=False)),
+                ('featured', models.BooleanField(default=False)),
+                ('last_featured', models.DateField(default=datetime.date.today)),
+            ],
+            options={
+                'ordering': ('name',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='subject',
+            name='subreddits',
+            field=models.ManyToManyField(to='reddit.SubReddit', blank=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='image',
+            name='subreddit',
+            field=models.ForeignKey(to='reddit.SubReddit'),
+            preserve_default=True,
+        ),
+    ]

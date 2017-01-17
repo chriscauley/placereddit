@@ -37,10 +37,8 @@ class SubReddit(models.Model):
     new_images = []
     for i,s in enumerate(imgs):
       url = "http://i.imgur.com/%s.jpg"%s
-      print s
       if s in ["new","top"]:
         continue
-      print url
       try:
         o,new = Image.objects.get_or_create(url=url,subreddit=self)
         if new:
@@ -60,8 +58,8 @@ class Image(models.Model):
   url = models.URLField()
   width = models.IntegerField(default=0)
   height = models.IntegerField(default=0)
-  y_crop_order = models.CharField(max_length=1024,null=True,blank=True)
-  x_crop_order = models.CharField(max_length=1024,null=True,blank=True)
+  #y_crop_order = models.CharField(max_length=1024,null=True,blank=True)
+  #x_crop_order = models.CharField(max_length=1024,null=True,blank=True)
   date_added = models.DateTimeField(auto_now_add=True)
   active = models.BooleanField(default=True)
   fname = property(lambda self: self.url.split('/')[-1])
@@ -72,7 +70,8 @@ class Image(models.Model):
       try:
         os.remove(path)
       except OSError:
-        print "failed at deleting: %s"%path
+        if self.pk: # unsaved objects shouldn't have anything do delete
+          print "failed at deleting: %s"%path
   def delete(self,*args,**kwargs):
     self.delete_images()
     super(Image,self).delete(*args,**kwargs)
@@ -82,20 +81,30 @@ class Image(models.Model):
       self.active = False
       self.save()
   def save(self,*args,**kwargs):
-    if self.active and not self.width or not self.x_crop_order:
+    if self.active and not self.width: # or not self.x_crop_order:
       self.pull_from_imgur()
       I = self.get_PIL_object()
       self.width, self.height = I.size
-      self.x_crop_order,self.y_crop_order = cache_entropies(I)
+      if self.width < 300 or self.height < 300:
+        if self.pk:
+          self.delete()
+        else:
+          self.delete_images()
+        return
+      #self.x_crop_order,self.y_crop_order = cache_entropies(I)
       self.cache_all_sizes()
     super(Image,self).save(*args,**kwargs)
 
   @property
   def sizes_available(self):
-    w_inc = self.width/10
-    h_inc = self.height/10
-    return [(w_inc*i,h_inc*i) for i in range(1,10)]
-
+    w = self.width
+    h = self.height
+    out = []
+    while w > 50 and h > 50:
+      out.append((w,h))
+      w = int(w*0.8)
+      h = int(h*0.8)
+    return out[::-1]
   def cache_all_sizes(self):
     image = self.get_PIL_object()
     for size in self.sizes_available[::-1]:
@@ -115,18 +124,17 @@ class Image(models.Model):
         if size[0]>width and size[1]>height:
           path = "%s_%sx%s"%(self.fpath,size[0],size[1])
           break
-
     f = open(path,'rb')
     return _Image.open(f)
 
   def crop_response(self,width,height):
     image = self.get_PIL_object(width=width,height=height)
-    multiplier = 10
-    for i,size in enumerate(self.sizes_available):
-      if size[0]>width and size[1]>height:
-        multiplier = i+1
-        break
-    area = crop_image(image,(width,height),self.x_crop_order,self.y_crop_order,multiplier)
+    #multiplier = 10
+    #for i,size in enumerate(self.sizes_available):
+    #  if size[0]>width and size[1]>height:
+    #    multiplier = i+1
+    #    break
+    area = crop_image(image,(width,height)) #,self.x_crop_order,self.y_crop_order,multiplier)
     response = HttpResponse(content_type="image/jpeg")
     area.save(response, format='jpeg')
     return response

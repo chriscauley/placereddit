@@ -25,9 +25,9 @@ def index(request,slug=None,template=None):
     template = "index"
   nsfw = request.path.startswith('nsfw')
   subreddit = get_subreddit(slug,nsfw)
-  a = 100
-  b = 211
-  c = 322
+  a = 100*2
+  b = 211*2
+  c = 322*2
   side_sizes = [
     [(a,a),(b,a),(b,a),(a,a),(a,a),(a,a),(a,a)],
     [(b,b),(a,a),(a,a),(a,a),(a,a),(a,a)],

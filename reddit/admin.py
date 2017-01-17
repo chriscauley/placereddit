@@ -10,7 +10,7 @@ class SubRedditAdmin(admin.ModelAdmin):
     return "%s (%s active)"%(images.count(),images.filter(active=True).count())
 
 class ImageAdmin(admin.ModelAdmin):
-  list_display = ("__unicode__","view_imgur","width","height")
+  list_display = ("__unicode__","view_imgur","width","height","sizes_available")
   list_filter = ('subreddit',)
   search_fields = ['url']
   def view_imgur(self,obj):

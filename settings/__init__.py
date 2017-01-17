@@ -26,6 +26,7 @@ MIDDLEWARE_CLASSES = (
   'django.contrib.messages.middleware.MessageMiddleware',
 )
 TEMPLATE_DIRS = (os.path.join(SPATH,'templates'),)
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
 #STATICFILES_DIRS = (os.path.join(SPATH,'static'),)
 TEMPLATE_LOADERS = (
   'django.template.loaders.filesystem.Loader',

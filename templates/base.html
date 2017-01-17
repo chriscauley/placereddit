@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="{{ STATIC_URL }}favicon.ico" type="image/x-icon" />
     {% compress css %}
     <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}less/base.less" />
     {% endcompress %}
@@ -44,10 +44,10 @@
     </nav>
     <div id="wrapper" class="container">
       <div id="content">
-	{% block content %}
-	<div id="main">{% block main %}{% endblock %}</div>
-	<div id="side">{% block side %}{% endblock %}</div>
-	{% endblock %}
+        {% block content %}
+        <div id="main">{% block main %}{% endblock %}</div>
+        <div id="side">{% block side %}{% endblock %}</div>
+        {% endblock %}
       <div id="footer">{% include "footer.html" %}</div>
     </div>
   </body>

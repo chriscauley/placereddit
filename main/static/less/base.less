@@ -2,6 +2,13 @@
 @import "bootstrap/less/bootstrap.min.less";
 
 .bottom_container { height: 330px !important; overflow: hidden; margin-bottom: 15px;}
+.container {
+  @media (max-width: @screen-xs-max) { width: 360px; }
+}
+.instructions {
+  b { font-size: 1.2em; }
+  pre { margin-bottom: 15px; }
+}
 .home-lead { margin: 39px 0; }
 li .well { margin-top: 10px; }
 .nav-tabs li a { font-size: 18px; }
@@ -13,11 +20,15 @@ img { max-width: 100%; }
   height: 555px;
   @media (max-width: @screen-md-max) { height: 455px; }
   @media (max-width: @screen-sm-max) { height: 345px; }
-}
-
-.w-100, .w-211, .w-330 {
-  float: left;
-  margin: 100%/60;
+  .w-100, .w-211, .w-330 {
+    float: left;
+    margin: 100%/60;
+  }
+  &:nth-child(2n+1) {
+    .w-100, .w-211, .w-330 {
+      float: right;
+    }
+  }
 }
 
 .w-100 { width: 30%; }

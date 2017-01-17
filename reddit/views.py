@@ -27,28 +27,14 @@ def index(request,slug=None,template=None):
   subreddit = get_subreddit(slug,nsfw)
   a = 100
   b = 211
+  c = 322
   side_sizes = [
-    ("r",[(a,a),(b,a),(b,a),(a,a),(a,a),(a,a),(a,a)]),
-    ("c",[(b,b),(a,a),(a,a),(a,a),(a,a),(a,a)]),
-    # [(100,100),(330,100)],
-    # [(215,100),(100,100),(100,100)],
-    # [(100,100),(100,100),(215,100)],
-    # [(215,215),(100,100),(100,100),(215,100)],
-    # [(330,100),(100,100)],
-    # [(215,100),(100,100),(100,100)],
-    # [(100,100),(215,100),(100,100)],
-    # [(100,100),(100,215),(100,100),(100,100),(100,100),(215,100),],
-    ]
+    [(a,a),(b,a),(b,a),(a,a),(a,a),(a,a),(a,a)],
+    [(b,b),(a,a),(a,a),(a,a),(a,a),(a,a)],
+    [(a,c),(b,a),(a,a),(a,a),(a,a),(a,a)]
+  ]
   side_sizes = (side_sizes*2)[random.choice(range(len(side_sizes))):]
-  side_sizes = side_sizes[:4]
-  nums = [100,100,215,330]
-  sizes = []
-  for w in nums:
-    sizes += [(w,h) for h in nums]
-  sizes = sizes[:-1]+ [(215,100)]*5
-  random.shuffle(sizes)
-  sizes = sizes[:-4]
-  srs = SubReddit.objects.all()
+  side_sizes = side_sizes[:2]
   randints = range(21)
   random.shuffle(randints)
   values = {
@@ -57,7 +43,6 @@ def index(request,slug=None,template=None):
     'randint': (i for i in randints*2),
     'subreddits': [s for s in SubReddit.objects.filter(nsfw=nsfw) if s.image_set.count()>20],
     'side_rows': side_sizes,
-    'sizes': sizes,
     'nsfw': nsfw,
     'r': 'nsfw' if nsfw else 'r',
     }

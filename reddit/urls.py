@@ -8,6 +8,6 @@ urlpatterns = patterns(
   'reddit.views',
   url(r'^$','redirect', {'url': '/r/featured/'}),
   url(r'^%s/(?P<template>how_to_use|how_it_works|list_of_subreddits|django)?/?$'%s,'index',name='index'),
-  url(r'^%s/%s%s/$'%(s,wxh,ex),'image',name='image'),
-  url(r'^%s/%s[_/](?P<num>[1,2,3]?\d)%s/$'%(s,wxh,ex),'image',name='image'),
+  url(r'^%s/%s%s/?$'%(s,wxh,ex),'image',name='image'),
+  url(r'^%s/%s[_/](?P<num>\d?\d)%s/?$'%(s,wxh,ex),'image',name='image'),
 )

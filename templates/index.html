@@ -2,28 +2,29 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-sm-6">
     <div style="text-align: center;">
       <img src="{{ STATIC_URL }}placereddit.png" />
     </div>
     <p class="lead home-lead">
       Place Reddit is an easy and exciting way to get varied pictures for your development/design needs.
     </p>
-    <div class="well" style="white-space: pre">
-Like this: http://placereddit.com/r/{{ subreddit.slug }}/100x75
+    <div class="instructions">
+      <b>Pick a subreddit ...</b>
+      <pre><code>placereddit.com/r/<b>{{ subreddit.slug }}/</b></code></pre>
 
-Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_1
+      <b>... dimensions</b>
+      <pre><code>placereddit.com/r/{{ subreddit.slug }}/<b>100x75</b></code></pre>
 
-Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_2
+      <b>...and random integer</b>
+      <pre><code>placereddit.com/r/{{ subreddit.slug }}/100x75_<b>17</b></code></pre>
 
-Or this:   http://placereddit.com/r/{{ subreddit.slug }}/100x75_20
-
-Each number (1-20) gives a different image!
+      <b>Each number (1-20) gives a different image!</b>
     </div>
   </div>
-  <div class="col-xs-6">
-    {% for klass, row in side_rows %}
-    <div class="side_container {{ klass }}" title="{{ row }}">
+  <div class="col-sm-6">
+    {% for row in side_rows %}
+    <div class="side_container" title="{{ row }}">
       {% for w,h in row %}
       <img src="/{{ r }}/{{ slug }}/{{ w }}/{{ h }}/{{ randint.next }}/" class="item w-{{ w }} h-{{ h }}" />
       {% endfor %}
@@ -32,7 +33,7 @@ Each number (1-20) gives a different image!
   </div>
   {% comment %}
   <div class="col-xs-12 bottom_container">
-    {% for w,h in sizes %}
+    {% for w,h in bot_sizes %}
     <img src="/{{ r }}/{{ slug }}/{{ w }}/{{ h }}/{{ randint.next }}/" class="item w{{ w }} h{{ h }}" />
     {% endfor %}
   </div>

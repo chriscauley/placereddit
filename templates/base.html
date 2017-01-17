@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{{ request.path }} - PlaceReddit.com</title>
     <link rel="icon" href="{{ STATIC_URL }}favicon.ico" type="image/x-icon" />
     {% compress css %}
     <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}less/base.less" />

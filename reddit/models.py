@@ -31,17 +31,17 @@ class SubReddit(models.Model):
     super(SubReddit,self).save(*args,**kwargs)
     self.pull_from_imgur()
   def pull_from_imgur(self):
-    url = "http://imgur.com/r/%s/rss"%self.slug
+    url = "http://imgur.com/r/%s"%self.slug
     html = requests.get(url).text
-    imgs = re.findall(r'img src=&quot;(http://i.imgur.com/[\w\d]+\.jpg)&quot;',html)
+    imgs = re.findall(r'src="(//i.imgur.com/[\w\d]+\.jpg)"',html)
     new_images = []
     for i,url in enumerate(imgs):
       try:
-        o,new = Image.objects.get_or_create(url=url,subreddit=self)
+        o,new = Image.objects.get_or_create(url="http:"+url,subreddit=self)
         if new:
           new_images.append(unicode(o))
-      except IOError: #! TODO apparently some images are too large?!
-        pass
+      except IOError,e: #! TODO apparently some images are too large?!
+        print "failed to write %s"%e
     if self.image_set.filter(active=True).count() > 60:
       for i in self.image_set.all()[60:]:
         i.mark_inactive()

@@ -7,3 +7,4 @@ src/*
 .static/*
 *.sql
 settings/local.py
+main/static/tmp # sym link useful to view tmp images

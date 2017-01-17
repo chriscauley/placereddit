@@ -23,7 +23,7 @@ Each number (1-20) gives a different image!
   </div>
   <div class="col-xs-6">
     {% for row in side_rows %}
-    <div class="side_container">
+    <div class="side_container" title="{{ row }}">
       {% for w,h in row %}
       <img src="/{{ r }}/{{ slug }}/{{ w }}/{{ h }}/{{ randint.next }}/" width="{{ w }}" height="{{ h }}"
            class="item" style="height: {{ h }}px !important;" />

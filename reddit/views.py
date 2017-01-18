@@ -33,6 +33,8 @@ def index(request,slug=None,template=None):
     [(b,b),(a,a),(a,a),(a,a),(a,a),(a,a)],
     [(a,c),(b,a),(a,a),(a,a),(a,a),(a,a)]
   ]
+  if slug == "catsstandingup":
+    side_sizes = [[(a,c),(a,c),(a,c)]]
   side_sizes = (side_sizes*2)[random.choice(range(len(side_sizes))):]
   side_sizes = side_sizes[:2]
   randints = range(21)

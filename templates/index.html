@@ -11,13 +11,13 @@
     </p>
     <div class="instructions">
       <b>Pick a subreddit ...</b>
-      <pre><code>placereddit.com/r/<b>{{ subreddit.slug }}/</b></code></pre>
+      <pre><code><span>placereddit.com/r/</span><b>{{ subreddit.slug }}/</b></code></pre>
 
       <b>... dimensions</b>
-      <pre><code>placereddit.com/r/{{ subreddit.slug }}/<b>100x75</b></code></pre>
+      <pre><code><span>placereddit.com/r/{{ subreddit.slug }}/</span><b>100x75</b></code></pre>
 
       <b>...and random integer</b>
-      <pre><code>placereddit.com/r/{{ subreddit.slug }}/100x75_<b>17</b></code></pre>
+      <pre><code><span>placereddit.com/r/{{ subreddit.slug }}/100x75_</span><b>17</b></code></pre>
 
       <b>Each number (1-20) gives a different image!</b>
     </div>
@@ -39,4 +39,15 @@
   </div>
   {% endcomment %}
 </div>
+<script>
+  $(function() {
+    if (window.location.href.toLowerCase().match("catsstandingup")) {
+      var elements = document.querySelectorAll("*");
+      $("*").each(function(i,e) {
+        if ($(e).children().length || !e.innerText.replace(/\s/g,'')) { return }
+        $(e).text("Cat.");
+      });
+    }
+  });
+</script>
 {% endblock %}

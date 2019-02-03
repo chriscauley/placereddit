@@ -7,4 +7,7 @@ src/*
 .static/*
 *.sql
 settings/local.py
-main/static/tmp # sym link useful to view tmp images
+main/static/tmp # sym link useful to view tmp imagesn
+
+.venv
+node_modules

@@ -9,7 +9,6 @@ INSTALLED_APPS = (
   'django.contrib.messages',
   'django.contrib.staticfiles',
   'sorl',
-  'devserver',
   'main', #abstract classes only
   'compressor',
   'reddit',

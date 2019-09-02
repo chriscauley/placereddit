@@ -3,13 +3,10 @@
   <pythonpath>/home/django/placereddit/</pythonpath>
   <chdir>/home/django/placereddit/</chdir>
   <socket>127.0.0.1:46536</socket>
-  <processes>2</processes>
-  <app mountpoint="/">
-    <script>wsgi.application</script>
-  </app>
-  <plugin>python</plugin>
-  <harakiri>180</harakiri>
+  <home>/home/django/placereddit/.venv/</home>
+  <processes>1</processes>
+  <master>1</master>
   <socket-timeout>180</socket-timeout>
   <pidfile>/tmp/placereddit.pid</pidfile>
-  <module>wsgi:application</module>
+  <module>django_uwsgi:application</module>
 </uwsgi>

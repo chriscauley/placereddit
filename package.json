@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/chriscauley/placereddit#readme",
   "dependencies": {
-    "less": "^3.9.0"
+    "less": "^3.10.3"
   }
 }

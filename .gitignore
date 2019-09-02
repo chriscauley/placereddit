@@ -8,6 +8,7 @@ src/*
 *.sql
 settings/local.py
 main/static/tmp # sym link useful to view tmp imagesn
+logs/*
 
 .venv
 node_modules

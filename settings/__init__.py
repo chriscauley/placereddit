@@ -3,6 +3,11 @@ SPATH = os.path.normpath(os.path.join(os.path.dirname(__file__), '..')) # direct
 PPATH = SPATH # project root
 UPLOAD_DIR = 'uploads'
 
+ALLOWED_HOSTS = [
+  'placereddit.com',
+  'new2.placereddit.com'
+]
+
 DEBUG = TEMPLATE_DEBUG = True
 ADMINS = MANAGERS = (
   ('chriscauley','chris@lablackey.com'),

@@ -8,5 +8,5 @@
   <master>1</master>
   <socket-timeout>180</socket-timeout>
   <pidfile>/tmp/placereddit.pid</pidfile>
-  <module>django_uwsgi:application</module>
+  <module>main.wsgi:application</module>
 </uwsgi>

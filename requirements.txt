@@ -1,4 +1,4 @@
-django==1.7.6
+django==2.2.24
 sorl-thumbnail==11.12.1b
 django-compressor==1.4
 psycopg2==2.7.7
